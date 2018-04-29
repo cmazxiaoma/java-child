@@ -1,0 +1,24 @@
+package cn.photoflash.user.service;
+
+import cn.photoflash.user.bean.User;
+import cn.photoflash.user.service.imp.UserException;
+
+public interface UserService {
+	// 用户注册 调用dao的findByUsername();
+	public void register(User user);
+
+	// 用户登录
+	public void login(User user) throws UserException;
+
+	// 查询用户信息根据id查询
+	public User find(int id);
+
+	// 根据用户的姓名查询数据库中用户的信息
+	public User find(User user);
+
+	// 修改用户信息
+	public void update(User user);
+
+	// 检验用户的电话或者邮箱或者用户名是否可用（可用为true 不可用为false）
+	public boolean check(User user);
+}

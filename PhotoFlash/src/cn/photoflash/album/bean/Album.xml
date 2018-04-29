@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<!-- 上面的是固定格式配置 -->
+<sqlMap>
+	<typeAlias alias="Album" type="cn.photoflash.album.bean.Album" />
+
+	<!-- 添加相册 -->
+	<insert id="add" parameterClass="Album">
+		INSERT INTO
+		t_album(albumname,a_description,type,coverpath,time,power,uid)
+		VALUES
+		(#albumname#,#a_description#,#type#,#coverpath#,#time#,#power#,#uid#)
+	</insert>
+
+
+	<!-- 删除相册 -->
+	<delete id="deleteById" parameterClass="int">
+		DELETE FROM t_album WHERE
+		aid=#aid#
+	</delete>
+
+
+	<!-- 根据id更新相册 -->
+	<update id="update" parameterClass="Album">
+		UPDATE t_album
+		SET
+		albumname=#albumname#,a_description=#a_description#,
+		type=#type#,coverpath=#coverpath#,power=#power# WHERE aid=#aid#
+	</update>
+
+	<!-- 根据id更新相册 相册不更新 -->
+	<update id="updateById" parameterClass="Album">
+		UPDATE t_album
+		SET
+		albumname=#albumname#,a_description=#a_description#,
+		type=#type#,power=#power# WHERE aid=#aid#
+	</update>
+
+	<select id="findAll" resultClass="Album">
+		SELECT * FROM t_album
+	</select>
+
+
+   <!-- 获取总记录数 -->
+	<select id="getTotalrows" resultClass="int">
+		SELECT COUNT(*) FROM
+		t_album
+	</select>
+
+
+
+  <!-- 分页查找 -->
+	<select id="findByPage" parameterClass="java.util.Map"
+		resultClass="Album">
+		SELECT * FROM t_album
+		LIMIT #curpage#, #pagesize#
+	</select>
+	
+	
+  <!-- 我的分页查找 -->
+	<select id="findPageByUid" parameterClass="java.util.Map"
+		resultClass="Album">
+		SELECT * FROM t_album  WHERE uid=#uid#
+		LIMIT #curpage#, #pagesize# 
+	</select>
+
+
+
+  <!-- 通过id查找 -->
+	<select id="findById" parameterClass="Integer" resultClass="Album">
+		SELECT * FROM t_album WHERE aid=#aid#
+	</select>
+
+
+  <!-- 通过相册名查找 -->
+	<select id="findByAlbumname" parameterClass="string"
+		resultClass="Album">
+		SELECT * FROM t_album WHERE albumname=#albumname#
+	</select>
+</sqlMap>

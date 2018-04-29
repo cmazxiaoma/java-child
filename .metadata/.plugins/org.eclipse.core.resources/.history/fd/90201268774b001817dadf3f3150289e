@@ -1,0 +1,151 @@
+package util;
+import java.io.*;
+import java.util.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import org.apache.commons.fileupload.FileItem;
+import org.apache.commons.fileupload.FileUploadException;
+import org.apache.commons.fileupload.FileUploadBase.SizeLimitExceededException;
+import org.apache.commons.fileupload.disk.DiskFileItemFactory;
+import org.apache.commons.fileupload.servlet.ServletFileUpload;
+public class FileUtil{
+	@SuppressWarnings("rawtypes")
+	private Map parameters=null;//储存表单信息
+	@SuppressWarnings("rawtypes")
+	private Map file=null;//储存上传文件的大小
+	private long max_size=30*1024*1024;//最大的上传文件大小
+	@SuppressWarnings("rawtypes")
+	public FileUtil(){
+		parameters= new HashMap();
+		file=new HashMap();
+	}
+	
+	@SuppressWarnings({ "rawtypes", "unchecked" })
+	public int upload(ServletContext servletContext,HttpServletRequest request,HttpServletResponse response,String uploadPath) throws IOException {
+		//实例化一个硬盘文件工厂，用来配置上传组件ServletFileUpload
+		DiskFileItemFactory diskFileItemFactory=new DiskFileItemFactory();
+		//设置上传文件时用于临时存放文件的内存大小，这里是4KB，多余的部分将零食存在硬盘中
+		diskFileItemFactory.setSizeThreshold(4096);
+		//用以上工厂实例化上传组件
+		ServletFileUpload fileUpload=new ServletFileUpload(diskFileItemFactory);
+		//设置最大上传文件大小
+		fileUpload.setSizeMax(max_size);
+		//解决路径或者文件名为乱码的问题
+		fileUpload.setHeaderEncoding("UTF-8");
+		response.setContentType("text/html;charset=UTF-8");
+		PrintWriter out=response.getWriter();
+		List fileList=null;
+		try{
+			fileList=fileUpload.parseRequest(request);//得到所有上传文件
+		}catch(FileUploadException e){
+			if(e instanceof SizeLimitExceededException){
+				System.out.println("文件大小超过"+max_size+"字节");
+				return 0;
+			}
+			e.printStackTrace();
+		}
+		Iterator fileItr=fileList.iterator();
+		while(fileItr.hasNext()){
+			FileItem fileItem=null;
+			String sourceFilePath=null;
+			String sourceFileName=null;
+			String fileExt=null;
+			String filePath=null;
+			String realPath=null;
+			String fileName=null;
+			long size=0;
+			fileItem=(FileItem)fileItr.next();//得到当前文件 
+			//如果是上传文件而不是表单信息
+			if(!fileItem.isFormField()){
+				sourceFilePath=fileItem.getName();//得到源文件的完整路径 , 这一步有问题。 这不是获取文件的名字，怎么回事完整路径呢？
+				size=fileItem.getSize();
+				if(!sourceFilePath.equals("")&&size!=0){//如果上传文件不为空
+					sourceFileName=sourceFilePath.substring(sourceFilePath.lastIndexOf("\\")+1);
+					//得到去除路径的文件名
+					fileExt=sourceFileName.substring(sourceFileName.lastIndexOf(".")+1);
+					//得到文件扩展名
+					//以当前的系统时间保存上传文件
+					long systemTime=System.currentTimeMillis();
+					filePath="/WEB-INF"+uploadPath+"/"+systemTime+"."+fileExt;
+					//列子:filePath:/software/1463237688379.exe
+					realPath=servletContext.getRealPath(filePath);
+					System.out.println("得到所有上传文件filelist:"+fileList);
+					System.out.println("fileItr:"+fileItr);
+					System.out.println("得到当前文件fileItem:"+fileItem);
+					System.out.println("filePath:"+filePath);
+					System.out.println("realPath:"+realPath);
+					System.out.println("文件名"+sourceFileName);
+					System.out.println("文件完整路径:"+sourceFilePath);
+					System.out.println("uploadPath:"+uploadPath);
+					System.out.println("文件扩展名:"+fileExt);
+					System.out.println("文件大小"+size);
+					System.out.println(servletContext.getRealPath("/WEB-INF/software") );
+			
+					
+					try{
+						fileItem.write(new File(realPath));
+					}catch(Exception e){
+						e.printStackTrace();
+						return 0;
+					}
+					file.put("size",String.valueOf(size));
+					file.put("filePath",filePath);
+					file.put("fileName", sourceFileName);
+				}
+			}else{
+					//如果不是上传文件而是表单信息，则将信息保存在paramters中
+					String fileldName=fileItem.getFieldName();
+					System.out.println("fileldName:"+fileldName);
+					String value=fileItem.getString("UTF-8");
+					System.out.println("value:"+value);
+					parameters.put(fileldName,value);//把上传文件表单里面的 属性名和值封装到parameters这个对象里面
+				}
+			}
+			return 1;
+		}
+		//下载文件的方法，参数Map存储下载文件信息，包括文件地址filePath和名称fileName
+	@SuppressWarnings("rawtypes")
+		public int download(ServletContext servletContext,HttpServletResponse response,Map file) throws IOException{
+			java.io.BufferedInputStream bis=null;
+			java.io.BufferedOutputStream bos=null;
+			try{
+				String filePath=(String)file.get("filePath");
+				System.out.println("下载这个文件的filePath路径："+filePath);
+				String realPath=servletContext.getRealPath(filePath);
+				System.out.println("下载这个文件的realPath路径："+realPath);
+				long fileLength=new File(realPath).length();
+				System.out.println("fileLength:"+fileLength);
+				response.setHeader("Content-disposition","attachment;filename="+new String(((String)file.get("fileName")).getBytes("GBK"),"ISO8859-1"));
+				response.setHeader("Content-Length", String.valueOf(fileLength));
+				bis=new BufferedInputStream(new FileInputStream(realPath));
+				bos=new BufferedOutputStream(response.getOutputStream());
+				byte[] buff=new byte[2048];
+				int bytesRead;
+				while((bytesRead=bis.read(buff,0,buff.length))!=-1){
+					bos.write(buff,0,bytesRead);
+				}
+			}catch(IOException e){
+				return 0;
+			}finally{
+				if(bis!=null){
+					bis.close();
+				}
+				if(bos!=null){
+					bos.close();
+				}
+			}
+			return 1;                                     
+		}
+		
+		@SuppressWarnings("rawtypes")
+		public Map getFile(){
+			return file;
+		}
+		@SuppressWarnings("rawtypes")
+		public Map getParameters(){
+			return parameters;
+		}
+		public void setMax_size(long max_size){
+			this.max_size=max_size;
+		}
+}

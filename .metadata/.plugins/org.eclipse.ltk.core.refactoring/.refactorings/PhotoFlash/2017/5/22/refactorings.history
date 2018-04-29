@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Move element &apos;web.xml&apos; to &apos;login.jsp&apos;&#x0D;&#x0A;- Original project: &apos;PhotoFlash&apos;&#x0D;&#x0A;- Destination element: &apos;login.jsp&apos;&#x0D;&#x0A;- Original element: &apos;web.xml&apos;&#x0D;&#x0A;- Update references to refactored element" description="Move file" element1="WebContent/WEB-INF/web.xml" files="1" flags="589830" folders="0" id="org.eclipse.jdt.ui.move" policy="org.eclipse.jdt.ui.moveResources" qualified="false" references="true" stamp="1496065659996" target="WebContent/login.jsp" units="0" version="1.0"/>
+</session>

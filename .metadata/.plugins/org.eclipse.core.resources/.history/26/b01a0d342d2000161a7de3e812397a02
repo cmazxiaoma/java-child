@@ -1,0 +1,53 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ page import="java.util.*" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<script type="text/javascript"> 
+function disptime(){
+var today = new Date(); //获得当前时间
+var year=today.getYear();
+var month=today.getMonth()+1;
+var day=today.getDate();
+var hh = today.getHours(); //获得小时、分钟、秒
+var mm = today.getMinutes();
+var ss = today.getSeconds();
+if(month.toString().length == 1){ 
+	month='0'+month;   
+	}   
+	if(day.toString().length == 1){   
+	day='0'+day;   
+	}
+	if(hh.toString().length == 1){   
+	hh='0'+hh;   
+	}
+	if(mm.toString().length == 1){   
+	mm='0'+mm;   
+	}
+	if(ss.toString().length == 1){   
+	ss='0'+ss;   
+	}
+/*设置div的内容为当前时间*/
+document.getElementById("myclock").innerHTML="当前时间是:"+year+"-"+month+"-"+day+" "+hh+":"+mm+":"+ss;
+/*
+使用setTimeout在函数disptime()体内再次调用setTimeout
+设置定时器每隔1秒（1000毫秒），调用函数disptime()执行，刷新时钟显示
+*/
+setTimeout("disptime()",1000);
+}
+</script>
+</head>
+<body  onload="disptime()">
+<%@ include file="adminheader.jsp"%>
+欢迎<%=request.getSession().getAttribute("loginusername")%>访问本网站
+<p>你当前ip为:<%=request.getSession().getAttribute("userip")%>
+<div id="myclock"></div>
+<p><a href='/xiaoma_net/logoout.jsp' onClick="{if(confirm('确实要注销吗？|by小马')){return true;}return false;}">注 销</a>
+<p><a href="https://mail.qq.com/cgi-bin/loginpage" class="STYLE13">您可以在此告诉我们您的建议或意见。</a>
+<p >联系方式邮箱:10010@qq.com</p>
+<a target="_blank" href="http://wpa.qq.com/msgrd?v=3&uin=1363739582&site=qq&menu=yes"><img src="http://wpa.qq.com/pa?p=2:1363739582:53" alt="点击这里给我发消息" width="145" height="220" border="0" title="点击这里给我发消息"/></a>
+</body>
+</html>

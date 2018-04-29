@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<!-- 上面的是固定格式配置 -->
+<sqlMap>
+	<typeAlias alias="User" type="cn.photoflash.user.bean.User" />
+	<!-- 这个type是全局的命名类 alias相当于type的缩写 这样在后面用到的时候都可以直接用note -->
+
+
+	<!-- 根据用户的姓名以及密码查询用户信息，返回该用户 -->
+	<select id="find" parameterClass="User" resultClass="User">
+		SELECT *
+		FROM t_user
+		WHERE username=#username# OR email=#username# OR phone=#username#
+	</select>
+
+
+	<!-- 根据id查询用户 -->
+	<select id="findById" parameterClass="int" resultClass="User">
+		SELECT *
+		FROM t_user WHERE uid=#uid#
+	</select>
+
+	<!-- 添加用户 -->
+	<insert id="add" parameterClass="User">
+		INSERT INTO t_user
+		(username,password,email,phone)
+		values(#username#,#password#,#email#,#phone#)
+	</insert>
+
+
+	<!-- 通过电话更新用户 -->
+	<update id="updateByPhone" parameterClass="User">
+	    UPDATE t_user 
+	    SET 
+	    password=#password# WHERE phone=#phone# 
+	</update> 
+	
+	
+	<!-- 通过邮箱更新用户 -->
+	<update id="updateByEmail" parameterClass="User">
+	    UPDATE t_user 
+	    SET 
+	    password=#password#  WHERE email=#email#
+	</update> 
+
+
+
+	<!-- 如何使用ibatis解决分页查询  -->
+	<select id="findByPage" parameterClass="java.util.Map"
+		resultClass="User">
+		SELECT * FROM t_user
+		LIMIT #min#, #max#
+	</select>
+	
+	<!-- 找邮箱 或者电话或者用户 -->
+	<select id="findByOthers" parameterClass="User" resultClass="User">
+	   SELECT * FROM t_user WHERE email = #email# OR phone = #phone# OR username=#username#
+	</select>
+
+</sqlMap>
+
+ 

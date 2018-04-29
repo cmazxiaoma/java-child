@@ -1,0 +1,60 @@
+/* 懒人图库 搜集整理 www.lanrentuku.com */
+
+/* ::::: http://netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css ::::: */
+
+@font-face {
+	font-family: "FontAwesome";
+	font-style: normal;
+	font-weight: normal;
+	src: url('fontawesome-webfont.eot') format("embedded-opentype"), url('fontawesome-webfont.woff') format("woff"), url('fontawesome-webfont.ttf') format("truetype"), url('fontawesome-webfont.svg') format("svg");
+}
+/* ::::: http://devrama.com/static/_default/base.css ::::: */
+
+article, aside, figure, footer, header, hgroup, menu, nav, section { display: block; margin: 0px; padding: 0px; }
+body { position: relative; margin: 0px 0px 25px; background-color: rgb(255, 255, 255); font-family: Arial,sans-serif; font-size: 13px; }
+img { border: medium none; }
+a, a:visited { color: rgb(46, 162, 204); }
+a:hover { color: rgb(33, 112, 141); }
+*, *:after, *:before { box-sizing: border-box; }
+.clear:after { content: ""; display: block; clear: both; }
+p code { padding: 2px 4px; font-size: 0.9em; color: rgb(175, 30, 67); white-space: nowrap; background-color: rgb(243, 220, 227); border-radius: 4px; }
+#content > h1, #content > h2, #content > h3 { color: rgb(39, 114, 141); margin: 0px; }
+#content > h1 { font-size: 50px; padding-top: 0.83em; }
+p { font-size: 16px; line-height: 1.5em; }
+header { background-color: rgb(0, 0, 0); }
+header .home { float: left; display: block; padding: 7px; color: rgb(179, 179, 179); }
+header .home:hover { color: rgb(181, 24, 27); }
+footer { position: fixed; bottom: 0px; width: 100%; background-color: rgb(0, 0, 0); color: rgb(179, 179, 179); text-align: center; padding: 3px; z-index: 1000; }
+/* ::::: http://devrama.com/static/_default/js/syntaxhighlighter_3.0.83/styles/shCore.css ::::: */
+
+.syntaxhighlighter a, .syntaxhighlighter div, .syntaxhighlighter code, .syntaxhighlighter table, .syntaxhighlighter table td, .syntaxhighlighter table tr, .syntaxhighlighter table tbody, .syntaxhighlighter table thead, .syntaxhighlighter table caption, .syntaxhighlighter textarea { background: none repeat scroll 0% 0% transparent ! important; border: 0px none ! important; bottom: auto ! important; float: none ! important; height: auto ! important; left: auto ! important; line-height: 1.1em ! important; margin: 0px ! important; outline: 0px none ! important; overflow: visible ! important; padding: 0px ! important; position: static ! important; right: auto ! important; text-align: left ! important; top: auto ! important; vertical-align: baseline ! important; width: auto ! important; box-sizing: content-box ! important; font-family: "Consolas","Bitstream Vera Sans Mono","Courier New",Courier,monospace ! important; font-weight: normal ! important; font-style: normal ! important; font-size: 1em ! important; min-height: inherit ! important; }
+.syntaxhighlighter { width: 100% ! important; margin: 1em 0px ! important; position: relative ! important; overflow: auto ! important; font-size: 1em ! important; }
+.syntaxhighlighter .line { white-space: pre ! important; }
+.syntaxhighlighter table { width: 100% ! important; }
+.syntaxhighlighter table td.code { width: 100% ! important; }
+.syntaxhighlighter table td.code .container { position: relative ! important; }
+.syntaxhighlighter table td.code .line { padding: 0px 1em ! important; }
+.syntaxhighlighter.nogutter td.code .container textarea, .syntaxhighlighter.nogutter td.code .line { padding-left: 0em ! important; }
+.syntaxhighlighter .toolbar { position: absolute ! important; right: 1px ! important; top: 1px ! important; width: 11px ! important; height: 11px ! important; font-size: 10px ! important; z-index: 10 ! important; }
+.syntaxhighlighter .toolbar a { display: block ! important; text-align: center ! important; text-decoration: none ! important; padding-top: 1px ! important; }
+/* ::::: http://devrama.com/static/_default/js/syntaxhighlighter_3.0.83/styles/shThemeEmacs.css ::::: */
+
+.syntaxhighlighter { background-color: black ! important; }
+.syntaxhighlighter .line.alt1 { background-color: black ! important; }
+.syntaxhighlighter .line.alt2 { background-color: black ! important; }
+.syntaxhighlighter .toolbar { color: white ! important; background: none repeat scroll 0% 0% rgb(153, 0, 0) ! important; border: medium none ! important; }
+.syntaxhighlighter .toolbar a { color: white ! important; }
+.syntaxhighlighter .toolbar a:hover { color: rgb(156, 207, 244) ! important; }
+.syntaxhighlighter .plain, .syntaxhighlighter .plain a { color: rgb(211, 211, 211) ! important; }
+.syntaxhighlighter .string, .syntaxhighlighter .string a { color: rgb(255, 158, 123) ! important; }
+.syntaxhighlighter .keyword { color: aqua ! important; }
+.syntaxhighlighter .color1, .syntaxhighlighter .color1 a { color: rgb(235, 219, 141) ! important; }
+/* ::::: http://devrama.com/static/devrama-slider/devrama-slider.css ::::: */
+
+body {  }
+#content { margin: 0px auto 100px; max-width: 1200px; font-size: 16px; }
+#content .syntaxhighlighter { overflow-y: hidden ! important; }
+#content .syntaxhighlighter > table > tbody > tr > td.code { padding: 10px ! important; }
+#content .photo-license-toggle { margin: 0px auto; padding: 10px 0px; max-width: 1024px; text-align: right; }
+#content .photo-license { display: none; margin: 0px auto; max-width: 1024px; font-size: 0.8em; border: 1px dashed rgb(111, 111, 111); border-radius: 6px; padding: 15px 10px; line-height: 1.6em; }
+.example-animation { color: rgb(255, 255, 255); font-size: 60px; }

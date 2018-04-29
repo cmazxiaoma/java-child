@@ -1,0 +1,174 @@
+package registerBean;
+import jdbc.bean.DBBean;
+import java.sql.*;
+import java.util.ArrayList;
+public class register{
+	private String username;
+	private String passwords;
+	private String email;
+	private String rgtime;
+	private String rgip;
+	private int id;
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
+	public String getRgip() {
+		return rgip;
+	}
+	public void setRgip(String rgip) {
+		this.rgip = rgip;
+	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getRgtime() {
+		return rgtime;
+	}
+	public void setRgtime(String rgtime) {
+		this.rgtime = rgtime;
+	}
+	public String getUsername() {
+		return username;
+	}
+	public void setUsername(String username) {
+		this.username = username;
+	}
+	public String getPasswords() {
+		return passwords;
+	}
+	public void setPasswords(String passwords) {
+		this.passwords = passwords;
+	}
+	
+	
+	@Override
+	public String toString() {
+		return "register [username=" + username + ", passwords=" + passwords
+				+ ", email=" + email + ", rgtime=" + rgtime + ", rgip=" + rgip
+				+ ", id=" + id + "]";
+	}
+	//检查用户名是否存在的方法
+	public boolean checkName(){
+		boolean exist=false;
+		String sql="select * from registerinfo where username='"+username+"'";
+		DBBean xm=new DBBean();
+		ResultSet rs=xm.executeQuery(sql);
+		try{
+			if(rs.next())
+			{
+				exist=true;
+			}
+		}
+		catch(SQLException e){
+			e.printStackTrace();
+	}
+	xm.close();
+	return exist;	
+}
+//将注册用户信息添加到数据库的方法
+public int registerUser(){
+	int result=0;
+	String sql="insert into registerinfo(username,passwords,email,rgtime,rgip) values('"+username+"','"+passwords+"','"+email+"',now(),'"+rgip+"')";
+	DBBean xm=new DBBean();
+	result=xm.executeUpdate(sql);
+	xm.close();
+	return result;
+	}
+public boolean checklogin(){
+	boolean exist=false;
+	String sql="select * from registerinfo where username='"+username+"' and passwords='"+passwords+"'";
+	DBBean xm=new DBBean();
+	ResultSet rs=xm.executeQuery(sql);
+	try{
+		if(rs.next())
+		{
+			exist=true;
+		}
+	}
+	catch(SQLException e){
+		e.printStackTrace();
+}
+xm.close();
+return exist;
+}
+public boolean checkrgip(String rgip){
+	boolean exist=false;
+	String sql="select * from registerinfo where rgip='"+rgip+"'";
+	DBBean xm=new DBBean();
+	ResultSet rs=xm.executeQuery(sql);
+	try{
+		if(rs.next())
+		{
+			exist=true;
+		}
+	}
+	catch(SQLException e){
+		e.printStackTrace();
+}
+xm.close();
+return exist;
+}
+public boolean checkadmin(){
+	boolean exist=false;
+	String sql="select * from registerinfo where username='admin' and passwords='admin'";
+	DBBean xm=new DBBean();
+	ResultSet rs=xm.executeQuery(sql);
+	try{
+		if(rs.next())
+		{
+			exist=true;
+		}
+	}
+	catch(SQLException e){
+		e.printStackTrace();
+}
+xm.close();
+return exist;
+}
+//返回单条注册信息
+public static register getById(String id){
+	String sql="select * from registerinfo where id="+id;
+	DBBean xm=new DBBean();
+	ResultSet rs=xm.executeQuery(sql);
+	register xmm1=new register();
+	try{
+		if(rs.next()){
+			xmm1.setId(rs.getInt("id"));
+			xmm1.setUsername(rs.getString("username"));
+			xmm1.setPasswords(rs.getString("passwords"));
+			xmm1.setEmail(rs.getString("email"));
+			xmm1.setRgtime(rs.getString("rgtime"));
+			xmm1.setRgip(rs.getString("rgip"));
+		}
+		rs.close();
+	}catch(SQLException e){
+			e.printStackTrace();
+		}
+		xm.close();
+		return xmm1;
+	}
+//修改某条留言信息记录的方法
+public static int update(String id,String username,String passwords,String email,String rgtime,String rgip){
+	int result=0;
+	String sql="update registerinfo set username='"+username+"',passwords='"+passwords+"',email='"+email+"',rgtime='"+rgtime+"',rgip='"+rgip+"' where id="+id;
+	System.out.println("更新注册信息的sql语句:"+sql);
+	DBBean xm=new DBBean();
+	result=xm.executeUpdate(sql);
+	System.out.println("更新的结果result"+result);
+	return result;
+}
+//删除某条留言信息记录的方法
+public static int delete(String id){
+	int result=0;
+	String sql="delete from registerinfo where id="+id;
+	DBBean xm=new DBBean();
+	result=xm.executeUpdate(sql);
+	return result;
+}
+}

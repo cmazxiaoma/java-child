@@ -1,0 +1,53 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+</head>
+<body>
+这是listAll界面
+<center>
+<h3>小马应用下载中心</h3>
+<c:set var="url" value="${pageContext.request.contextPath}/servlet/UserServlet/listAll"/>
+<c:forEach var="file" items="${pageBean.data}">
+<table border=1 width="70%">
+<tr>
+<td bgcolor="#CCCCC" width="15%">文件说明</td>
+<td width="45%"><a href="${pageContext.request.contextPath}/servlet/DownLoadServlet?id${file.id}">${file.name }</a></td>
+<td bgcolor="#CCCCC" width="15%">文件大小</td>
+<td bgcolor="#CCCCC" width="15%">文件字节</td>
+</tr>
+<tr>
+<td bgcolor="#CCCCC" width="15%">更新日期</td>
+<td width="45%">${file.lastModified}</td>
+<td bgcolor="#CCCCC" width="15%">下载次数</td>
+<td>${file.hits }</td>
+</tr>
+<tr>
+<td bgcolor="#CCCCC" width="15%">详细描述</td>
+<td colspan="3">${file.description}</td>
+</tr>
+</table>
+</c:forEach>
+每页 ${pageBean.pageSize}行   共${pageBean.totalRows}行
+页数 (${pageBean.curPage}/${pageBean.totalPages})
+<c:choose>
+<c:when test="$pageBean.curPage==1}">首页 上一页</c:when>
+<c:otherwise>
+<a href="${url}?page=1">首页</a>
+<a href="${url}?page=${pageBean.curPage-1}">上一页</a>
+</c:otherwise>
+</c:choose>
+<c:choose>
+<c:when test="${pageBean.curPage>=pageBean.totalPages}">下一页 尾页</c:when>
+<c:otherwise>
+<a href="${url}?page=${pageBean.curPage+1}">下一页</a>
+<a href="${url}?page=${pageBean.totalPages}">尾页</a>
+</c:otherwise>
+</c:choose>
+</center>
+</body>
+</html>

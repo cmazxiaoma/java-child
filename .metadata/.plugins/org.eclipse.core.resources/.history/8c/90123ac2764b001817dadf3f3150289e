@@ -1,0 +1,86 @@
+package cn.photoflash.album.service.imp;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import cn.photoflash.album.bean.Album;
+import cn.photoflash.album.bean.PageBean;
+import cn.photoflash.album.dao.AlbumDao;
+import cn.photoflash.album.dao.imp.AlbumDaoImp;
+import cn.photoflash.album.service.AlbumService;
+
+public class AlbumServiceImp implements AlbumService {
+
+	private AlbumDao albumDao = new AlbumDaoImp();
+
+	@Override
+	public void add(Album album) {
+		albumDao.add(album);
+	}
+
+	@Override
+	public void delete(Album album) throws AlbumException {
+		albumDao.deleteById(album.getAid());
+	}
+
+	@Override
+	public List<Album> findAll() {
+		return albumDao.findAll();
+	}
+
+	@Override
+	public PageBean findByPage(int page, int pagesize) {
+		Map<String,Integer> map = new HashMap<String,Integer>();
+		PageBean pb = new PageBean();
+		pb.setCurpage(page);
+		pb.setPagesize(pagesize);
+		pb.setTotalrows(albumDao.getTotalrows());
+		map.put("pagesize", pagesize);
+		map.put("curpage", (page-1)*pagesize);
+		List<Album> albumList =  albumDao.findByPage(map);
+		pb.setAlbumList(albumList);
+		return pb;
+	}
+
+	@Override
+	public Album find(Integer aid) {
+		return albumDao.find(aid);
+	}
+
+	@Override
+	public boolean find(String albumname) {
+		Album album = albumDao.find(albumname);
+		if(album==null)
+			 return true;
+		else 
+			return false;
+	}
+
+	@Override
+	public void update(Album album) {
+		//为null代表用户没有修改图片 局部更新
+		if(album.getCoverpath()==null||album.getCoverpath().equals("")){
+			albumDao.updateById(album);
+		}else{
+			albumDao.update(album);
+		}
+	}
+
+	@Override
+	public PageBean findByPage(int page, int pageSize, int uid) {
+		Map<String,Integer> map = new HashMap<String,Integer>();
+		PageBean pb = new PageBean();
+		pb.setCurpage(page);
+		pb.setPagesize(pageSize);
+		pb.setTotalrows(albumDao.getTotalrows());
+		map.put("pagesize", pageSize);
+		map.put("curpage", (page-1)*pageSize);
+		map.put("uid", uid);
+		List<Album> albumList =  albumDao.findPageByUid(map);
+		pb.setAlbumList(albumList);
+		return pb;
+	}
+
+
+}

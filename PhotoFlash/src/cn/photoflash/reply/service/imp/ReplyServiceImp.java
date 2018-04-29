@@ -1,0 +1,38 @@
+package cn.photoflash.reply.service.imp;
+
+import java.util.List;
+
+import cn.photoflash.reply.bean.Reply;
+import cn.photoflash.reply.dao.ReplyDao;
+import cn.photoflash.reply.dao.imp.ReplyDaoImp;
+import cn.photoflash.reply.service.ReplyService;
+import cn.photoflash.user.bean.User;
+import cn.photoflash.user.dao.UserDao;
+import cn.photoflash.user.dao.imp.UserDaoImp;
+
+public class ReplyServiceImp implements ReplyService {
+
+	private ReplyDao replyDao = new ReplyDaoImp();
+	private UserDao userDao = new UserDaoImp();
+
+	@Override
+	public void add(Reply reply) {
+		replyDao.add(reply);
+	}
+
+	@Override
+	public void delete(Reply reply) {
+		replyDao.delete(reply);
+	}
+
+	@Override
+	public List<Reply> findAll(int photoId) {
+		List<Reply> replyList = replyDao.findAll(photoId);
+		for (Reply reply : replyList) {
+			User user = userDao.findById(reply.getUid());
+			reply.setUsername(user.getUsername());
+		}
+		return replyList;
+	}
+
+}

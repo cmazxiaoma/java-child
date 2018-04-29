@@ -1,0 +1,53 @@
+package bean;
+import bean.people;
+import  java.util.ArrayList;
+public class Test {
+	//你运行 怎么运行
+	public static void main(String[] args) {
+		test();
+	}
+	
+	/*
+	 * 
+	 * 测试list  用问题吗？可以  你写给我看看   用list添加people 有问题？
+	 * 
+	 * 写完了？对
+	 */
+	public static void test(){
+		ArrayList<people> list= new ArrayList<people>();//你输入法咋了　　在这里这句话的意思是创建一个list对象  然后这个list数据能存放people对象  其他的不能存放 明白？明白
+		// 那继续
+		people one = new people();
+		one.setUsername("张三");
+		one.setAge(12);
+		
+		people two = new people();
+		two.setUsername("李四");
+		two.setAge(12);
+		
+		people three = new people();
+		three.setUsername("王五");
+		three.setAge(14);
+		
+		
+		//添加  你来
+		list.add(one);
+		list.add(two);
+		list.add(three);
+		
+		//查看添加后的信息  我们看下  可以？1
+		System.out.println(list.toString());
+		
+	}// for（people one:List）什么意思   这个是增强for   不用 书上有啊  作为注册信息 输出  那你多看书 看不懂的话 明早我跟你说  可以晚安啊 我去看老师的 88
+}
+	
+	// 这个需要看API文档  你要多看看 我也没看过了   还记得一点  你看着怎么用 到时候自己看Api KE
+	/*
+	 * 在这个Test方法中我要完成对对象的添加    我直接用你的 但是里面的 我不用你这个  而是应该用我给的类写 我写的类叫people
+	 * 知道为什么这样写么？　ｎｅｗ　ｐｅｏｐｌｅ　创建新对象　这个？　　还有没有　建一个数组啊　　年龄　名字
+	 * 　　很高心的告诉你　不是这样的啊。　　　
+	 */
+//	public void getList(){
+//		ArrayList<Test> list= new ArrayList<Test>();
+//		 list.add(sb);
+//		//为什么这么多错误
+//	}

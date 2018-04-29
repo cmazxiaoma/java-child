@@ -1,0 +1,28 @@
+package servlets;
+import util.*;
+
+import java.io.IOException;
+import java.util.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+
+import service.CommonService;
+@SuppressWarnings("serial")
+public class DownLoadServlet extends HttpServlet{
+	 public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+	    	doPost(request,response);
+		}
+	 public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		 String id=request.getParameter("id");
+		 CommonService cs=new CommonService();
+		 //得到下载文件的信息,Map对象封装了filePath和fileName的信息
+		 @SuppressWarnings("rawtypes")
+		Map file=cs.getDownLoadFile(id);
+		 FileUtil fu=new FileUtil();
+		 //实现文件下载的动作
+		 int r=fu.download(this.getServletContext(),response,file);
+		 //更新下载次数
+		 if(r==1)
+			 cs.updateHits(id);
+	 }
+}

@@ -1,0 +1,12 @@
+public class CallHistory {
+	
+	public static void main(String[] args){
+		MyCall mc=new MyCall(5);
+		mc.push("xiaoma 17:05");
+		mc.push("wutao 18:50");
+		mc.push("mayday 19:10");
+		System.out.println("i  have  "+mc.size()+"calls today");
+		System.out.println("The lastest one is:"+mc.top());
+	}
+}
+ 

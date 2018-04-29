@@ -1,0 +1,36 @@
+
+public class TestSleepYield {
+	public static void main(String[] args) {
+		MyThread t1 = new MyThread("t1");
+		MyThread t2 = new MyThread("t2");
+		// 设置优先级
+		t2.setPriority(Thread.MAX_PRIORITY);
+		t1.start();
+		t2.start();
+	}
+
+}
+
+class MyThread extends Thread {
+	MyThread(String s) {
+		super(s);
+	}
+
+	public void run() {
+		for (int i = 1; i <= 30; i++) {
+			System.out.println(this.getName() + ":" + i);
+			if (i % 5 == 0) {
+				try {
+					sleep(1000);
+				} catch (InterruptedException e) {
+					e.printStackTrace();
+				}
+
+				// yield();
+
+			}
+
+		}
+	}
+
+}

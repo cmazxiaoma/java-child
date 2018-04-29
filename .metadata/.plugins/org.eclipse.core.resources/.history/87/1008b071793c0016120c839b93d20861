@@ -1,0 +1,166 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<title>相册管理</title>
+<style type="text/css">
+body {
+	font-family:"Microsoft Yahei";
+	font-size:12px;
+	margin:0;
+}
+#pic{
+	width:350px;
+	height:350px;
+	border-radius:50px;
+}
+#ph{
+	border-radius:30px;
+}
+</style> 
+
+
+<style type="text/css">
+<!--
+.topDiv {
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:12px;
+	color: #999966;	
+	background-image:url(background/a2.jpg);
+	border: 5px solid #FFFFCC;
+	position:absolute;
+	z-index:9999;
+	display:none;
+	width:500px;
+	height:300px;
+	margin-top:13%;
+	margin-left:30%;
+	padding:10px;
+}
+-->
+</style>
+<script type="text/javascript">
+function showDiv(){
+ var winWidth;
+ var winHeight;
+	if (document.body && document.body.clientHeight && document.body.clientWidth)
+		{
+			winHeight = document.body.clientHeight;
+			winWidth = document.body.clientWidth;
+		}
+    document.getElementById('show').style.display="block";
+    document.getElementById('show_win').style.display="block";
+	document.getElementById('show').style.width=winWidth+"px";
+	document.getElementById('show').style.height=winHeight+"px";
+}
+
+	function jumpAndUpdate(pageName){
+		window.location.reload();
+	}
+</script>
+
+</head>
+<body bgcolor="#ffffff" style="margin:0px;">
+<%@ include file="header.jsp" %><br/><br/><br/>
+
+<div style="Z-INDEX:8888;POSITION:absolute;-moz-opacity:0.50;opacity:0.3;filter:alpha(opacity=30);BACKGROUND-COLOR:#000;display:none;" id="show">
+</div> 
+<div class="topDiv" id="show_win" >
+<form action="" method="post" name="f" onSubmit="return check()">
+<table width="400" height="300" align="center" >  
+	<tr><td colspan="2" align="center"><font color="#CC9999" size="6">上传照片</font></td></tr>  
+	<tr><td width="140"  align="right"><font size="3">照片名称：</font></td><td align="left"><input type="text" name="photoname" style="background-color:transparent" ></td></tr>
+	<tr><td  align="right"><font  size="3">照片描述：</font></td><td align="left"><textarea name="p_description" rows="1"cols="19" style="background-color:transparent"></textarea></td></tr>
+	<tr><td  align="right"><font  size="3">上传者：</font></td><td align="left"><input type="text" name="albumname" style="background-color:transparent" ></td></tr>
+	<tr><td  align="right"><font size="3">上传到相册：</font></td><td align="left">
+	   <select name="type" style="background-color:transparent">
+						<option selected>相册1</option>
+						<option >相册2</option>
+						<option>相册3</option>
+				</select>
+        </td></tr>
+	<tr><td align="right"><input type="submit" name="submit"  value="上传" style="background-color:transparent"></td>
+	<td align="center"><input type="button" name="tuichu"  value="退出" style="background-color:transparent" onclick="jumpAndUpdate('s.jsp')"></td></tr>      
+</table>
+</form>
+</div>
+
+<center>
+<table border="0" align="center" cellspacing="0" bgcolor="#ffffff">
+	<tr>
+		<td align="right">
+			<img src="<%=request.getContextPath()%>/background/2.jpg" width="150" height="150" id="ph">
+		</td>
+		<td align="left">
+			<br/><br/><font size="4">封面名称</font><br/><br/><br/><br/>
+			<a href="javascript:void(0);" onclick="javascript:showDiv();"><img src="<%=request.getContextPath()%>/background/sha3.png"></a>
+		</td>
+		<td>
+			<font size="4">封面说明：</font><br/>
+			<!-- 封面说明内容 -->
+		</td>
+	</tr>
+	<tr><td colspan="3"><hr color="#E6E6FA"/></td></tr>
+	<tr align="center">
+		<td width="30%" align="center">
+		<!-- 这里显示图片的封面 -->
+		
+		<img src="<%=request.getContextPath()%>/background/2.jpg" id="pic">
+		</td>
+		<td width="30%"><img src="<%=request.getContextPath()%>/background/3.jpg" id="pic"></td>
+		<td width="30%"><img src="<%=request.getContextPath()%>/background/4.png" id="pic"></td>
+	</tr>
+	<tr align="center">
+		<td>
+		<!--显示图片的名称-->图片名称<br/>
+		<!--显示图片创建时间-->时间
+		</td>
+		<td>
+		<!--显示图片的名称-->图片名称<br/>
+		<!--显示图片创建时间-->时间
+		</td>
+		<td>
+		<!--显示图片的名称-->图片名称<br/>
+		<!--显示图片创建时间-->时间
+		</td>
+	</tr>
+	<tr align="center">
+		<td width="30%"><img src="<%=request.getContextPath()%>/background/777.jpg" id="pic"></td>
+		<td width="30%"><img src="<%=request.getContextPath()%>/background/1.jpg" id="pic"></td>
+		<td width="30%"><img src="<%=request.getContextPath()%>/background/2.png" id="pic"></td>
+	<tr align="center">
+		<td>
+		<!--显示图片的名称-->图片名称<br/>
+		<!--显示图片创建时间-->时间
+		</td>
+		<td>
+		<!--显示图片的名称-->图片名称<br/>
+		<!--显示图片创建时间-->时间
+		</td>
+		<td>
+		<!--显示图片的名称-->图片名称<br/>
+		<!--显示图片创建时间-->时间
+		</td>
+	</tr>
+ </table>
+	<p>
+<!--  每页 ${pageBean.pageSize}行   共${pageBean.totalRows}行   页数  ${pageBean.curPage}/${pageBean.totalPages}
+	<c:choose>
+		<c:when test="${pageBean.curPage==1}">首页 上一页</c:when>
+		<c:otherwise>
+			<a href="${url}?page=1">首页</a>
+			<a href="${url}?page=${pageBean.curPage-1}">上一页</a>
+		</c:otherwise>
+	</c:choose>
+	<c:choose>
+		<c:when test="${pageBean.curPage>=pageBean.totalPages}">下一页  尾页</c:when>
+			<c:otherwise>
+				<a href="${url}?page=${pageBean.curPage+1}">下一页</a>
+				<a href="${url}?page=${pageBean.totalPages}">尾页</a>
+			</c:otherwise>
+	</c:choose>-->
+<%@ include file="bottom.jsp" %>	
+</center>
+</body>
+</html>

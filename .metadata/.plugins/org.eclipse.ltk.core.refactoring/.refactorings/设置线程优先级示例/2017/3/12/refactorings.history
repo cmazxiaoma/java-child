@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<session version="1.0">
+<refactoring comment="Rename type &apos;MyThread&apos; to &apos;TestSleepYield&apos;&#x0D;&#x0A;- Original project: &apos;设置线程优先级示例&apos;&#x0D;&#x0A;- Original element: &apos;MyThread&apos;&#x0D;&#x0A;- Renamed element: &apos;TestSleepYield&apos;&#x0D;&#x0A;- Update references to refactored element&#x0D;&#x0A;- Update textual occurrences in comments and strings" description="Rename type &apos;MyThread&apos;" flags="589830" id="org.eclipse.jdt.ui.rename.type" input="/src&lt;{MyThread.java[MyThread" matchStrategy="1" name="TestSleepYield" qualified="false" references="true" similarDeclarations="false" stamp="1489964225468" textual="false" version="1.0"/>
+</session>

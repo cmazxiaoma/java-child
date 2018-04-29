@@ -1,0 +1,62 @@
+package service;
+import util.*;
+
+import java.io.File;
+import java.util.*;
+public class UserService{
+	private DBUtil db=new DBUtil();
+	//获得所有信息的PageBean对象
+	public PageBean listAll(int curPage){
+		String sql="select * from t_photo order by pid desc";
+		return db.getPageBean(sql,new Object[]{},curPage);
+	}
+	//通过id获得单条数据信息
+	@SuppressWarnings("rawtypes")
+	public Map getById(String id){
+		String sql="select * from t_photo where pid=?";
+		return db.getMap(sql, new Object[]{id});
+	}
+	//添加信息
+	@SuppressWarnings("rawtypes")
+	public int add(Map file,Map parameters){
+		int result=0;
+		Object photoname=parameters.get("photoname");
+		Object p_description=parameters.get("p_description");
+		Object filepath=file.get("filePath");
+		String sql="insert into t_photo values(null,?,?,?,null,null,null,no3w())";
+		result=db.update(sql, new Object[]{photoname,p_description,filepath});
+		return result;
+	}
+	//更新上传文件信息
+		@SuppressWarnings("rawtypes")
+		public int updateFile(String realPath,Map file,Map parameters){
+			int result=0;
+			File f=new File(realPath);
+			f.delete();
+			String sql="update t_photo set filepath=? where pid=?";
+			System.out.println("更改了上传文件信息:"+sql);
+			result=db.update(sql,new Object[]{file.get("filePath"),parameters.get("pid")});
+			return result;
+		}
+		//更新信息
+		@SuppressWarnings("rawtypes")
+		public int updateInfo(Map parameters){
+			Object pid=parameters.get("pid");
+			Object p_description=parameters.get("p_description");
+			Object photoname=parameters.get("photoname");
+			String sql="update t_photo set photoname=?,p_description=? where pid=?";
+			System.out.println("更新的sql:"+sql);
+			return db.update(sql, new Object[]{photoname,p_description,pid});
+		}
+		//删除上传文件信息
+		public int delFile(Map file){
+			int result=0;
+			System.out.println("进行了删除上传文件信息步骤");
+			String sql="delete from t_photo where filepath=?";
+			System.out.println("删除的语句："+sql);
+			System.out.println("filePath:"+file.get("filepath"));
+			result=db.update(sql,new Object[]{file.get("filepath")});
+			return result;
+		}
+	
+}

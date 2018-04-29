@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE sqlMap      
+    PUBLIC "-//ibatis.apache.org//DTD SQL Map 2.0//EN"      
+    "http://ibatis.apache.org/dtd/sql-map-2.dtd" >
+<!-- 上面的是固定格式配置 -->
+<sqlMap>
+	<typeAlias alias="Photo" type="cn.photoflash.photo.bean.Photo" />
+
+	<!-- 添加相册 -->
+	<insert id="add" parameterClass="Photo">
+		INSERT INTO t_photo(photoname,filepath,p_description,isdel,uid,aid,uptime)
+		VALUES(#photoname#,#filepath#,#p_description#,#isdel#,#uid#,#aid#,#uptime#)
+	</insert>
+	
+	<!--删除相片 -->
+	<delete id="delete" parameterClass="Photo">
+	UPDATE t_photo SET isdel=#isdel# WHERE pid=#pid#
+	</delete>
+	
+	<!-- 更新相片 -->
+	<update id="update" parameterClass="Photo">
+	UPDATE t_photo SET
+	photoname=#photoname#,p_description=#p_description#,filepath=#filepath#
+	WHERE pid=#pid#
+	</update>
+	
+	<!-- 更新部分相片信息 -->
+	<update id="updateById" parameterClass="Photo">
+	UPDATE t_photo SET
+	photoname=#photoname#,p_description=#p_description#
+	WHERE pid=#pid#
+	</update>
+	
+	
+	<!-- 查找相片  -->
+	<select id="find" parameterClass="int" resultClass="Photo">
+	  SELECT * FROM t_photo WHERE pid=#pid#  AND isdel=false 
+	</select>
+	 
+	
+	<!-- 查找某相册下的所有照片 -->
+    <select id="findAllByAid" parameterClass="int" resultClass="Photo">
+      SELECT * FROM t_photo WHERE aid=#aid# and isdel='false' 
+    </select>
+
+
+	<!-- 查找所有的相片 -->
+	<select id="findAll" parameterClass="Photo" resultClass="Photo">
+	  SELECT * FROM t_photo,t_album WHERE isdel=false and power=1
+	</select>
+	
+	
+	<!-- 分页查询 -->
+	<select id="findByPage" parameterClass="java.util.Map" resultClass="Photo">
+	SELECT * FROM t_photo  WHERE  aid IN (SELECT aid FROM t_album  WHERE uid=#uid# OR POWER=1) AND isdel='FALSE' LIMIT #page#,#pagesize# 
+	</select>
+	
+	
+	<!-- 分页查询 -->
+	<select id="findByUid" parameterClass="java.util.Map" resultClass="Photo">
+	 SELECT * FROM t_photo WHERE uid=#uid# AND isdel='false' LIMIT #page#,#pagesize#
+	</select>
+	
+	
+	
+	<!-- 获取某相册总记录数 -->
+	<select id="getTotalrowsByAid"  parameterClass="int"  resultClass="int">
+	   SELECT COUNT(*) FROM t_photo WHERE aid=#aid# AND isdel='false'
+	</select>
+	
+	<!-- 获取某相册总记录数 -->
+	<select id="getTotalrowsByUid"  parameterClass="int"  resultClass="int">
+	   SELECT COUNT(*) FROM t_photo WHERE uid=#uid# AND isdel='false'
+	</select>
+	
+	
+	<!-- 获取总记录数 -->
+	<select id="getTotalrows"  parameterClass="int"  resultClass="int">
+	   SELECT COUNT(*) FROM t_photo  WHERE isdel='false'
+	</select>
+	
+	
+	<!-- 带条件的分页查询 -->
+	<select id="findByAid" parameterClass="java.util.Map" resultClass="Photo">
+	 SELECT * FROM t_photo WHERE aid=#aid# LIMIT #page#,#pagesize#
+	</select>
+</sqlMap>

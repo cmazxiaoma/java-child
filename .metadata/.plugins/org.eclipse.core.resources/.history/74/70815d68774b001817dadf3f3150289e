@@ -1,0 +1,29 @@
+package empServlet;
+import java.io.*;
+import java.util.List;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletException;
+import javax.servlet.http.*;
+import empBean.empinfo;
+import pageBean.page;
+import java.io.IOException;
+public class empcontroller extends HttpServlet {
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String page=request.getParameter("page");
+		int curpage=0;
+		if(page==null||page.length()<1){
+			curpage=1;
+		}else{
+			curpage=Integer.parseInt(page);
+		}
+		empinfo ep=new empinfo();
+		page pg=ep.getEmps(curpage);
+		System.out.println(pg.toString());
+		request.getSession().setAttribute("pg",pg);
+		RequestDispatcher rs=request.getRequestDispatcher("/admin.jsp");
+		rs.forward(request,response);
+	}
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		doGet(request,response);
+	}
+}

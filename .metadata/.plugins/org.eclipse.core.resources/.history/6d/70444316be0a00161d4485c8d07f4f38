@@ -1,0 +1,59 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<%@ page import=java.util.ArrayList %>
+<%@ page import=way.bean.xiaomanetinfo %>
+<%@ page errorPage="error.jsp" %>
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>admin</title>
+</head>
+<body>
+<%out.println("<script language='javaScript'> alert('管理员登录成功!');</script>");%>
+<form name="form1" method="post" action="/xiaomanetvip/add.do">
+<table align="center" width="50%" border="1">
+<caption>添加留言</caption>
+<tr>
+<th width="30%">昵称：</th>
+<td width="70%"><input name="username"  type="text"></td>
+</tr>
+<tr>
+<th>留言内容：</th> 
+<td><textarea name="liuyan" rows="5" cols="20"></textarea></td>
+</tr>
+<tr>
+<th>是否匿名：</th> 
+<td><input type="radio" name="ch" value="0">匿名   <input type="radio" name="ch" value="1">不匿名</td>
+</tr>
+<tr>
+<th colspan="2">
+<input type="submit" name="submit" value="添加">
+<input type="reset" value="重置">
+</th>
+</tr>
+</table>
+</form>
+<form action="xiaomanetvip/list.do" method="post">
+<input type="submit" name="submit1" value="以管理员身份查看留言信息">
+</form>
+<%
+ String submit1=request.getParameter("submit1");
+ int x=0;
+%>
+<%if(submit1!=null&&!submit1.equals("")){
+	out.println("----------------------------------留言数据-------------------------"+"<br>");
+	ArrayList<xiaomanetinfo> list=(ArrayList<xiaomanetinfo>)request.getAttribute("list");
+	for(xiaomanetinfo xmm1:list){
+		String id=xmm1.getId();
+			out.println("第"+id+"条留言"+"| 昵称："+xmm1.getUsername()+"| 留言："+xmm1.getLiuyan()+"| 发表时间："+xmm1.getTimes()+"<font color='red'> |  "+xmm1.getShenhe()+" |  屏蔽："+xmm1.getHide()+"</font><a href='/xiaomanetvip/edit.do?id="+id+"'> 修改 </a>&nbsp;<a href='/xiaomanetvip/del.do?id="+id+"'> 删除 </a>"+"<br>");
+ 			out.println("<hr>");
+ 			x=1;
+		}
+	if(x==0){
+		out.println("留言数据为空,没有信息！"+"<br>");
+	}
+ }
+%>
+</body>
+</html>

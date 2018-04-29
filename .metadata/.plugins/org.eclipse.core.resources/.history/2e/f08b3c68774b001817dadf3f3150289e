@@ -1,0 +1,72 @@
+package empBean;
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
+import jdbc.bean.DBUtil;
+import pageBean.page;
+import registerBean.register;
+public class empinfo{
+	private int getEmprows(){
+		int totalrows=0;
+		Connection conn=DBUtil.getConnection();
+		try{
+			Statement stmt=conn.createStatement();
+			String sql="select count(*) from registerinfo";
+			ResultSet rs=stmt.executeQuery(sql);
+			while(rs.next()){
+				totalrows=rs.getInt(1);
+				System.out.println("小马真帅！");
+			}
+			rs.close();	
+			stmt.close();
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		finally{
+			try{
+				conn.close();
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+		}
+		return totalrows;
+	}
+	public page getEmps(int page){
+		List<register> ary=new ArrayList<register>();
+		Connection conn=DBUtil.getConnection();
+		page pg=new page();
+		pg.setPagesize(3);//获得每页显示的行数
+		pg.setCurpage(page);//获得当前的页数
+		pg.setTotalrows(getEmprows());//获取总行数
+		int offset=(pg.getCurpage()-1)*pg.getPagesize();//起始数据的行数
+		int rows=pg.getPagesize();//要显示的记录数，每页显示的行数
+		try{
+			Statement stmt=conn.createStatement();
+			String sql="select * from registerinfo limit "+offset+","+rows;
+			ResultSet rs=stmt.executeQuery(sql);
+			while(rs.next()){
+				register rg=new register();
+				rg.setId(rs.getInt("id"));
+				rg.setUsername(rs.getString("username"));
+				rg.setPasswords(rs.getString("passwords"));
+				rg.setEmail(rs.getString("email"));
+				rg.setRgtime(rs.getString("rgtime"));
+				rg.setRgip(rs.getString("rgip"));
+				ary.add(rg);                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+			}
+			pg.setData(ary);
+			rs.close();
+			stmt.close();
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		finally{
+			try{
+				conn.close();
+			}catch(SQLException e){
+				e.printStackTrace();
+			}
+		}
+		return pg;
+	}
+}

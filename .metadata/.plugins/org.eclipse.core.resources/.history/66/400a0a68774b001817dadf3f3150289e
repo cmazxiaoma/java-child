@@ -1,0 +1,86 @@
+package service;
+import util.*;
+
+import java.io.File;
+import java.util.*;
+public class UserService{
+	private DBUtil db=new DBUtil();
+	//获得所有信息的PageBean对象
+	public PageBean listAll(int curPage){
+		String sql="select * from files order by lastModified desc";
+		return db.getPageBean(sql,new Object[]{},curPage);
+	}
+	//获得下载次数排名前10位的信息
+	@SuppressWarnings("rawtypes")
+	public List topList(){
+		String sql="select id,name,hits,username from files where hits!=0 order by hits desc limit 0,10";
+		System.out.println("进行了top排列");
+		System.out.println(sql);
+		return db.getList(sql,new Object[]{});
+	}
+	//通过id获得单条数据信息
+	@SuppressWarnings("rawtypes")
+	public Map getById(String id){
+		String sql="select * from files where id=?";
+		return db.getMap(sql, new Object[]{id});
+	}
+	//获得指定类型的数据信息的PageBean对象
+	public PageBean listSort(String type,int curPage){
+		String sql=null;
+		if(type==null||type.equals("")){
+			sql="select * from files order by type";
+			return db.getPageBean(sql,new Object[]{},curPage);
+		}else{
+			sql="select * from files where type=?";
+			return db.getPageBean(sql,new Object[]{type},curPage);
+		}
+	}
+	//获得指定类型和指定名称的数据信息的PageBean对象
+	public PageBean search(String type,String name,int curPage){
+		String sql=null;
+		if(type==null||type.equals("")){
+			if(name==null||name.equals("")){
+				sql="select * from files order by type";
+				return db.getPageBean(sql,new Object[]{},curPage);
+			}else{
+				sql="select * from files where name like ?";
+				return db.getPageBean(sql, new Object[]{"%"+name+"%"}, curPage);
+			}
+		}else{
+			if(name==null||name.equals("")){
+				sql="select * from files where type=?";
+				return db.getPageBean(sql, new Object[]{type}, curPage);
+			}else{
+				sql="select * from files where type=? and name like ?";
+				return db.getPageBean(sql, new Object[]{type, "%"+name+"%"},curPage);
+			}
+		}
+	}
+	//添加信息
+	@SuppressWarnings("rawtypes")
+	public int add(Map file,Map parameters){
+		int result=0;
+		Object name=parameters.get("name");
+		Object size=file.get("size");  //这里出错了
+		System.out.println("size:"+size);
+		String hits="0";
+		Object type=parameters.get("type");
+		Object description=parameters.get("description");
+		Object filePath=file.get("filePath");
+		Object fileName=file.get("fileName");
+		Object username=parameters.get("username");
+		String sql="insert into files values(null,?,now(),?,?,?,?,?,?,?)";
+		result=db.update(sql, new Object[]{name,size,type,description,filePath,fileName,hits,username});
+		return result;
+	}
+	//更新上传文件信息
+	@SuppressWarnings("rawtypes")
+	public int updateFile(String realPath,Map file,Map parameters){
+		int result=0;
+		File f=new File(realPath);
+		f.delete();
+		String sql="update files set size=?,hits=?,filePath=?,fileName=? where id=?";
+		result=db.update(sql,new Object[]{file.get("size"),"0",file.get("filePath"),file.get("fileName"),parameters.get("id")});
+		return result;
+	}
+}

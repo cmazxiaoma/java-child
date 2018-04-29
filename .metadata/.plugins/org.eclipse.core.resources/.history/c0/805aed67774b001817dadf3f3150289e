@@ -1,0 +1,64 @@
+package pageBean;
+import java.util.List;
+
+import registerBean.register;
+public class page{
+	private int curpage; //当前页数
+	private int totalrows;//总行数
+	private int pagesize;//每页显示行数
+	private int totalpages;//总页数
+	private List<register> data;//每页显示的数据
+	public int getTotalpages() {
+		if(totalrows%pagesize==0){
+			totalpages=totalrows/pagesize;
+		}else{
+			totalpages=(totalrows/pagesize)+1;
+		}
+		return totalpages;
+	}
+	public void setTotalpages(int totalpages) {
+		this.totalpages = totalpages;
+	}
+	public int getTotalrows() {
+		return totalrows;
+	}
+	public void setTotalrows(int totalrows) {
+		this.totalrows = totalrows;
+	}
+	public int getPagesize() {
+		return pagesize;
+	}
+	public void setPagesize(int pagesize) {
+		this.pagesize = pagesize;
+	}
+	
+
+	public int getCurpage(){
+		if(curpage>getTotalpages()){
+			curpage=getTotalpages();
+		}
+		else if(curpage<1){
+			curpage=1;
+		} 
+		return curpage;
+	}
+	public void setCurpage(int curpage) {
+		this.curpage = curpage;
+	}
+	
+	
+	public List<register> getData() {
+		return data;
+	}
+	public void setData(List<register> data) {
+		this.data = data;
+	}
+	@Override
+	public String toString() {
+		return "page [curpage=" + curpage + ", totalrows=" + totalrows
+				+ ", pagesize=" + pagesize + ", totalpages=" + totalpages
+				+ ", data=" + data + "]";
+	}
+	
+	
+}

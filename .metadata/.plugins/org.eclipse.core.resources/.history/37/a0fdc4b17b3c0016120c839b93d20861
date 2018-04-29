@@ -1,0 +1,47 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<title>Insert title here</title>
+<script>
+function check(){
+	name=document.f.name.value;
+	file=document.f.file.value;
+	if(name==""){
+		alert("文件名称不能为空！");
+		return false;
+	}else if(file==""){
+		alert("请选择要上传的文件！");
+		return false;
+	}else{
+		return true;
+	}
+}
+</script>
+</head>
+<body>
+<form name="f" onSubmit="return check()" action="${pageContext.request.contextPath}/servlet/UserServlet/add" method="post" enctype="multipart/form-data" >
+<div align="center">
+<h3>图片上传</h3>
+<table border="0" cellspacing="1" width="60%">
+<tr>
+<td width="20%" align="right" bgcolor="#CCCCCC"><b>照片名字</b></td>
+<td bgcolor="#CCCCCC"><input type="text" name="photoname" size="50"></td></tr>
+<tr><td align="right" bgcolor="#CCCCCC"><b>详细描述</b></td>
+<td bgcolor="#CCCCCC"><textarea rows="6" name="p_description" cols="50"></textarea>
+</td></tr>
+<tr><tr><td align="right" bgcolor="#CCCCCC"><b>文件上传</b></td>
+<td bgcolor="#CCCCCC"><input type="file" name="file" size="50"></td></tr>
+</table>
+</div>
+<div align="center">
+<p><input type="submit" value="提交">
+<p><input type="reset" value="重置">
+</div>
+</form>
+<a href="listAll.jsp">查询图片</a>
+</body>
+</html>

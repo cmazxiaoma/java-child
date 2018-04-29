@@ -1,0 +1,5 @@
+#Tomcat publish data
+#Wed May 31 13:47:08 CST 2017
+org.eclipse.jst.jee.server\:PhotoFlash=F\:\\apache-tomcat-7.0.42\\wtpwebapps\\PhotoFlash
+org.eclipse.jst.jee.server\:xiaomanetvip=F\:\\apache-tomcat-7.0.42\\wtpwebapps\\xiaomanetvip
+org.eclipse.jst.jee.server\:photoflashsb=F\:\\apache-tomcat-7.0.42\\wtpwebapps\\photoflashsb

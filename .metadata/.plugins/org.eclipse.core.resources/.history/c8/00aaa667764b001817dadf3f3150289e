@@ -1,0 +1,49 @@
+
+public class SafeStack implements StackInterface{
+	private int top=0;
+	private int[] values=new int[10];
+	//
+	private boolean flag=false;
+	
+	
+	public void push(int number){
+		synchronized(this){
+			while(flag){
+				try {
+					wait();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			
+			values[top]=number;
+			System.out.println("数字="+number+"入栈");
+			top++;
+			flag=true;
+			notifyAll();
+			System.out.println("入栈完成");
+		}
+		
+	}
+
+	
+	public void pop(){
+		synchronized(this){
+			while(!flag){
+				try {
+					wait();
+				} catch (InterruptedException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
+			System.out.println("出栈");
+			top--;
+			System.out.println("出栈成功  下标="+top+",数字="+values[top]);
+			flag=false;
+			notifyAll();
+		}
+		
+	}
+}

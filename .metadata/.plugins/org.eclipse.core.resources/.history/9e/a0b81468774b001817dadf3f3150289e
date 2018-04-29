@@ -1,0 +1,53 @@
+package util;
+import java.util.List;
+public class PageBean{
+	private int curPage; //当前页数
+	private int totalPages;//总页数
+	private int totalRows;//总行数
+	private int pageSize;//每页显示的行数
+	@SuppressWarnings("rawtypes")
+	private List data; //每页显示的数据
+	
+	public int getCurPage() {
+		if(curPage>getTotalPages()){ //当前页数大于总页数
+			curPage=getTotalPages(); 
+		}else if(curPage<1){ //当前页数小于1
+			curPage=1;
+		}
+		return curPage;
+	}
+	public void setCurPage(int curPage) {
+		this.curPage = curPage;
+	}
+	public int getTotalPages() {
+		if(totalRows%pageSize==0){
+			totalPages=totalRows/pageSize;
+		}else{
+			totalPages=(totalRows/pageSize)+1;
+		}
+		return totalPages;
+	}
+	public void setTotalPages(int totalPages) {
+		this.totalPages = totalPages;
+	}
+	public int getTotalRows() {
+		return totalRows;
+	}
+	public void setTotalRows(int totalRows) {
+		this.totalRows = totalRows;
+	}
+	public int getPageSize() {
+		return pageSize;
+	}
+	public void setPageSize(int pageSize) {
+		this.pageSize = pageSize;
+	}
+	@SuppressWarnings("rawtypes")
+	public List getData() {
+		return data;
+	}
+	@SuppressWarnings("rawtypes")
+	public void setData(List data) {
+		this.data = data;
+	}
+}

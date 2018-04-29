@@ -1,0 +1,17 @@
+package jdbc.bean;
+import java.sql.*;
+public class DBUtil{
+	public static Connection getConnection(){
+		Connection conn=null;
+		try{
+			Class.forName("com.mysql.jdbc.Driver");
+			String url="jdbc:mysql://localhost:3306/xiaoma_net";
+			conn=DriverManager.getConnection(url,"root","xiaoma96");
+		}catch(ClassNotFoundException e){
+			e.printStackTrace();
+		}catch(SQLException e){
+			e.printStackTrace();
+		}
+		return  conn;
+	}
+}

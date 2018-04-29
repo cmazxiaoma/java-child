@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" version="2.5">
+  <display-name></display-name>
+  <servlet>
+    <servlet-name>UserServlet</servlet-name>
+    <servlet-class>cn.photoflash.user.web.servlet.UserServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>AlbumServlet</servlet-name>
+    <servlet-class>cn.photoflash.album.web.service.AlbumServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>PhotoServlet</servlet-name>
+    <servlet-class>cn.photoflash.photo.web.servlet.PhotoServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>UpAlbumServlet</servlet-name>
+    <servlet-class>cn.photoflash.album.web.service.UpAlbumServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>UpPhotoServlet</servlet-name>
+    <servlet-class>cn.photoflash.photo.web.servlet.UpPhotoServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>UpdateAlbumServlet</servlet-name>
+    <servlet-class>cn.photoflash.album.web.service.UpdateAlbumServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>UpdatePhotoServlet</servlet-name>
+    <servlet-class>cn.photoflash.photo.web.servlet.UpdatePhotoServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>ReplyServlet</servlet-name>
+    <servlet-class>cn.photoflash.reply.web.servlet.ReplyServlet</servlet-class>
+  </servlet>
+
+ <servlet-mapping>
+ <servlet-name>UserServlet</servlet-name>
+ <url-pattern>/UserServlet</url-pattern>
+ </servlet-mapping>
+ 
+ <servlet-mapping>
+ <servlet-name>AlbumServlet</servlet-name>
+ <url-pattern>/AlbumServlet</url-pattern>
+ </servlet-mapping>
+ 
+ <servlet-mapping>
+ <servlet-name>PhotoServlet</servlet-name>
+ <url-pattern>/PhotoServlet</url-pattern>
+ </servlet-mapping>
+
+ <servlet-mapping>
+ <servlet-name>UpAlbumServlet</servlet-name>
+ <url-pattern>/UpAlbumServlet</url-pattern>
+ </servlet-mapping>
+
+ <servlet-mapping>
+ <servlet-name>UpPhotoServlet</servlet-name>
+ <url-pattern>/UpPhotoServlet</url-pattern>
+ </servlet-mapping>
+
+ <servlet-mapping>
+ <servlet-name>UpdateAlbumServlet</servlet-name>
+ <url-pattern>/UpdateAlbumServlet</url-pattern>
+ </servlet-mapping>
+ 
+
+ <servlet-mapping>
+ <servlet-name>UpdatePhotoServlet</servlet-name>
+ <url-pattern>/UpdatePhotoServlet</url-pattern>
+ </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>ReplyServlet</servlet-name>
+    <url-pattern>/ReplyServlet</url-pattern>
+  </servlet-mapping>
+ 
+ 
+ 
+ 
+ 
+  <filter>
+    <display-name>LoginFilter</display-name>
+    <filter-name>LoginFilter</filter-name>
+    <filter-class>cn.photoflash.user.web.filter.LoginFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>LoginFilter</filter-name>
+    <url-pattern>/LoginFilter</url-pattern>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>LoginFilter</filter-name>
+    <servlet-name>PhotoServlet</servlet-name>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>LoginFilter</filter-name>
+    <servlet-name>AlbumServlet</servlet-name>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>LoginFilter</filter-name>
+    <servlet-name>UpdateAlbumServlet</servlet-name>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>LoginFilter</filter-name>
+    <servlet-name>UpdatePhotoServlet</servlet-name>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>LoginFilter</filter-name>
+    <servlet-name>UpPhotoServlet</servlet-name>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>LoginFilter</filter-name>
+    <servlet-name>UpAlbumServlet</servlet-name>
+    <dispatcher>FORWARD</dispatcher>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>LoginFilter</filter-name>
+    <url-pattern>/user/photo/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+  </filter-mapping>
+  <filter-mapping>
+    <filter-name>LoginFilter</filter-name>
+    <url-pattern>/user/album/*</url-pattern>
+    <dispatcher>REQUEST</dispatcher>
+    <dispatcher>FORWARD</dispatcher>
+  </filter-mapping>
+</web-app>

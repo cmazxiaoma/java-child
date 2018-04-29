@@ -1,0 +1,62 @@
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.net.Socket;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Iterator;
+
+//负责处理每条线程通信的线程类
+public  class ServerThread implements Runnable{
+	//定义当前线程所处理的Socket
+	Socket s=null;
+	//该线程所处理的Socket所对象的输入流
+	BufferedReader bf=null;
+	public ServerThread(Socket s)throws IOException{
+		this.s=s;
+		//初始化该Socket对应的输入流
+		bf=new BufferedReader(new InputStreamReader(s.getInputStream(),"utf-8"));
+		
+	}
+	
+	public void run(){
+		String content=null;
+		//采取循环不断的从Socket中读取客户端发送过来的数据
+		System.out.println("服务器判断客户端时候发送消息");
+		while((content=readFromClient())!=null){
+			//将读到的内容向每一个Socket发送一次
+			for(Iterator<Socket> it=MyServer.socketList.iterator();it.hasNext();){
+				Socket s=it.next();
+				try{
+					System.out.println("读取了客户端过来的数据");
+					SimpleDateFormat sdf=new SimpleDateFormat("yy-MM-dd HH:mm:ss");
+					System.out.println(sdf.format(new Date())+"客户端："+s+"发来的消息="+readFromClient());
+					OutputStream os=s.getOutputStream();
+					os.write((content+"\n").getBytes("utf-8"));
+					
+				}catch(Exception e){;
+				//删除该Socket
+				it.remove();
+				System.out.println("当前抛出socket有异常");
+				System.out.println("当前socketList队列="+MyServer.socketList);
+				}
+			}
+			
+		}
+	}
+	
+	//定义读取客户端数据的方法
+	private String readFromClient(){
+		try{
+			String data=bf.readLine();
+			System.out.println("读出来的消息="+data);
+			return data;
+		}catch(IOException e){
+			e.printStackTrace();
+			//删除该Socket
+			MyServer.socketList.remove(s);
+		}
+		return null;
+	}
+}

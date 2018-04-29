@@ -1,0 +1,278 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" errorPage="error.jsp"%>
+    <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"><head>
+<title></title> 
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<script type="text/javascript" src="js/jquery-1.9.0.min.js"></script>
+<script type="text/javascript" src="images/login.js"></script>
+<link href="css/login2.css" rel="stylesheet" type="text/css" />
+<script type="text/javascript">
+    
+        var wait = 60;
+        function time(btn) {
+            
+            var mobilephone = $("#phone").val();
+            var patrnPhone  = /^(13[0-9]|14[0-9]|15[0-9]|17[0-9]|18[0-9])\d{8}$/;
+            if (!patrnPhone.test(mobilephone)) {alert('手机号码格式不正确，请确认后在输入');return;};
+ 
+            btn.removeAttribute("disabled");
+            if (wait == 60) {
+                $.post("./mobile_validate_code", { "mobile": mobilephone },
+                    function(data){
+                }, "json");
+            }
+ 
+            if (wait == 0) {
+              btn.removeAttribute("disabled");
+              btn.value = "获取验证码";
+              wait = 60;
+            } else {
+              btn.setAttribute("disabled", true);
+              btn.value = wait + "秒后重新获取";
+              wait--;
+              setTimeout(function () {
+                  time(btn);
+              },
+              1000)
+            }
+        }
+        function checkName(){
+        	if($('#user').val()==""){ 
+        		$('#user').css({
+    				border: "1px solid red",
+    				boxShadow: "0 0 2px red"
+    			});
+    			$('#checkuser').html("<font color='red'><b>×用户名不能为空</b></font>");
+    			return false;
+        	}
+        	if($('#user').val()!=""&&($('#user').val().length < 4 || $('#user').val().length > 16)){
+        		$('#user').css({
+    				border: "1px solid red",
+    				boxShadow: "0 0 2px red"
+    			});
+    			$('#checkuser').html("<font color='red'><b>××用户名只能为4-16个字符内</b></font>");
+    			return false;
+        	}
+        	if($('#user').val()!=""&&!('#user').val().length < 4 || $('#user').val().length > 16)){
+        		$('#user').css({
+    				border: "1px solid green",
+    				boxShadow: "0 0 2px green"
+    			});
+    			$('#checkuser').html("<font color='green'><b>√格式正确</b></font>");
+    			return false;
+        	}
+        		//window.open("checkName.action?username="+encodeURI(username),"check","menubar=no,height=300,width=400,left=300,top=80");
+        }
+        function checkpwd(){
+        	if ($('#passwd').val().length>=6) {
+        		$('#passwd').css({
+    				border: "1px solid green",
+    				boxShadow: "0 0 2px green"
+    			});
+    			$('#checkpwd1').html("<font color='green'><b>√√√</b></font>");
+    			return false;
+    		}
+        	else{
+        		$('#passwd').css({
+    				border: "1px solid red",
+    				boxShadow: "0 0 2px red"
+    			});
+    			$('#checkpwd1').html("<font color='red'><b>×密码不能小于6位</b></font>");
+    			return false;
+        	}
+        }
+        function checkrepwd(){
+        	if ($('#passwd2').val() != $('#passwd').val()||$('#passwd').val()=="") {
+    			$('#passwd2').css({
+    				border: "1px solid red",
+    				boxShadow: "0 0 2px red"
+    			});
+    			$('#checkpwd2').html("<font color='red'><b>×两次密码不一致！</b></font>");
+    			return false;
+    		}
+        	else{
+        		$('#passwd2').css({
+    				border: "1px solid green",
+    				boxShadow: "0 0 2px green"
+    			});
+        		$('#checkpwd2').html("<font color='green'><b>√√√</b></font>");
+    			return false;
+        	}
+        }
+        function checkemail(){
+        	if ($('#email').val() == "") {
+    			$('#email').css({
+    				border: "1px solid red",
+    				boxShadow: "0 0 2px red"
+    			});
+    			$('#checkemail').html("<font color='red'><b>×邮箱不能为空</b></font>");
+    			return false;
+    		}
+        	if($('#email').val()!=""&&($('#email').val().indexOf('@',0)==-1 || $('#email').val().indexOf('.',0)==-1)){
+        		$('#email').css({
+					border: "1px solid red",
+					boxShadow: "0 0 2px red"
+				});
+				$('#checkemail').html("<font color='red'><b>×邮箱格式错误</b></font>");
+				return false;
+        	}
+        	if($('#email').val()!=""&&!($('#email').val().indexOf('@',0)==-1 || $('#email').val().indexOf('.',0)==-1)){
+        		$('#email').css({
+					border: "1px solid green",
+					boxShadow: "0 0 2px green"
+				});
+        		$('#checkemail').html("<font color='green'><b>√√√</b></font>");
+				return false;
+        	}
+
+        }
+        function checkcode(){
+        	if ($('#code').val() == "") {
+    			$('#code').focus().css({
+    				border: "1px solid red",
+    				boxShadow: "0 0 2px red"
+    			});
+    			$('#checkcode').html("<font color='red'><b>×验证码不能为空</b></font>");
+    			return false;
+    		}
+        	else{
+        		$('#code').css({
+    				border: "1px solid green",
+    				boxShadow: "0 0 2px green"
+    			});
+        		$('#checkcode').html("<font color='green'><b>√成功填入验证码</b></font>");
+    			return false;
+        	}
+        	
+        }
+        </script>
+</head>
+<body background="<%=request.getContextPath()%>/background/1.jpg">
+<h1>PhotoFlash<sup>2016</sup></h1>
+
+<div class="login" style="margin-top:50px;">
+    
+    <div class="header">
+        <div class="switch" id="switch"><a class="switch_btn_focus" id="switch_qlogin" href="javascript:void(0);" tabindex="7">快速登录</a>
+			<a class="switch_btn" id="switch_login" href="javascript:void(0);" tabindex="8">快速注册</a><div class="switch_bottom" id="switch_bottom" style="position: absolute; width: 64px; left: 0px;"></div>
+        </div>
+    </div>    
+  
+    
+    <div class="web_qr_login" id="web_qr_login" style="display: block; height: 235px;">    
+
+            <!--登录-->
+            <div class="web_login" id="web_login">
+               
+               
+               <div class="login-box">
+    
+            
+			<div class="login_form">
+				<form action="" name="loginform" accept-charset="utf-8" id="login_form" class="loginForm" method="post"><input type="hidden" name="did" value="0"/>
+               <input type="hidden" name="to" value="log"/>
+                <div class="uinArea" id="uinArea">
+                <label class="input-tips" for="u">帐号：</label>
+                <div class="inputOuter" id="uArea">
+                    
+                    <input type="text" id="u" name="username2" class="inputstyle" style="width: 150px; height: 32px;"/>
+                </div>
+                </div>
+                <div class="pwdArea" id="pwdArea">
+               <label class="input-tips" for="p">密码：</label> 
+               <div class="inputOuter" id="pArea">
+                 <input type="password" id="p" name="password2" class="inputstyle" style="width: 150px; height: 32px;"/>
+               </div>
+                </div>
+               
+                <div style="padding-left:50px;margin-top:20px;"><input type="submit" value="登 录" style="width:150px;" class="button_blue"/></div>
+              </form>
+           </div>
+           
+            	</div>
+               
+            </div>
+            <!--登录end-->
+  </div>
+
+  <!--注册-->
+    <div class="qlogin" id="qlogin" style="display:none;">
+   
+    <div class="web_login"><form name="form2" id="regUser" accept-charset="utf-8"  method="post" action="/photoflash1/register.action">
+	      <input type="hidden" name="to" value="reg"/>
+		      		       <input type="hidden" name="did" value="0"/>
+        <ul class="reg_form" id="reg-ul" style="width: 350px;">
+        		<div id="userCue" class="cue" ><font color="339999">【欢迎你注册,时光流影zone】</font></div>
+                <li >
+                	
+                    <label for="user"  class="input-tips2">用户名：</label>
+                    <div class="inputOuter2" >
+                        <input type="text" id="user" name="username" maxlength="16" class="inputstyle2" style="width: 140px; height: 28px;" onblur="checkName();" /> 
+                        <a href="javaScript:checkName();">caonima</a>
+                        <div id="checkuser"></div>
+                    </div>
+                    
+                </li>
+                
+                <li>
+                <label for="passwd" class="input-tips2">密码：</label>
+                    <div class="inputOuter2">
+                        <input type="password" id="passwd"  name="password" maxlength="16" class="inputstyle2" style="width: 140px; height: 28px;" onblur="checkpwd();"/>
+                        <div id="checkpwd1"></div>
+                    </div>
+                    
+                </li>
+                <li>
+                <label for="passwd2" class="input-tips2">确认密码：</label>
+                    <div class="inputOuter2">
+                        <input type="password" id="passwd2" name="password" maxlength="16" class="inputstyle2" style="width: 140px; height: 28px;" onblur="checkrepwd();"/>
+                        <div id="checkpwd2"></div>
+                    </div>
+                    
+                </li>
+                
+				
+				
+				<li>
+				<label for="email" class="input-tips2">邮箱：</label>
+					<div class="inputOuter2">
+						<input type="text" id="email" name="email" maxlength="16" class="inputstyle2" style="width: 140px; height: 28px;" onblur="checkemail();"/>
+						<div id="checkemail"></div>
+					</div>	 
+				</li>
+				
+				<li>
+				<label for="phone" class="input-tips2">手机号：</label>
+					<div class="inputOuter2">
+						<input type="text" id="phone" name="phone" maxlength="16" class="inputstyle2" style="width: 140px; height: 28px;"/>
+						<div id="checkphone"></div>
+					</div>	 
+				</li>
+				
+				<li>
+                	
+                    <label for="code"  class="input-tips2">验证码：</label>
+                    <div class="inputOuter2">
+                        <input type="text" id="code" name="code" maxlength="7" size="10" class="inputstyle2" style="width:70px; height:30px;" onblur="checkcode();"/>
+                        <input type="button" value='获取验证码' onclick='time(this)' style="width:90x; height:34px;" class="codebutton"/><font color="green"></font>
+                        <div id="checkcode"></div>
+                  </div>
+                    
+                </li>
+				
+     
+                <li>
+                    <div class="inputArea">
+                        <input type="button" id="reg"  style="margin-top:10px;margin-left:85px;" class="button_blue" value="同意协议并注册"/> <a href="#" class="zcxy" target="_blank">注册协议</a>
+                    </div>
+                    
+                </li><div class="cl"></div>
+            </ul></form>
+ 
+    </div> 
+    </div>
+    <!--注册end-->
+</div>
+<div class="jianyi">*推荐使用ie8或以上版本ie浏览器或Chrome内核浏览器访问本站</div>
+</body></html>

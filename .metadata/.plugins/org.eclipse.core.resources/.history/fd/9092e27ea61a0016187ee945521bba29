@@ -1,0 +1,155 @@
+package servlets;
+import java.io.IOException;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import pageBean.page;
+import empBean.empinfo;
+import java.util.ArrayList;
+import registerBean.register;
+import java.io.*;
+import ip.ip;
+@SuppressWarnings("serial")
+public class registercontroller extends HttpServlet {
+    public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+    	doPost(request,response);
+	}
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		request.setCharacterEncoding("UTF-8");
+		response.setContentType("text/html;charset=UTF-8");
+		PrintWriter out=response.getWriter();
+		String actionUrl=request.getServletPath();
+       if(actionUrl.equals("/register.action")){
+    	   String username=request.getParameter("username");
+    	   String passwords=request.getParameter("passwords");
+    	   String email=request.getParameter("email");
+    	   String rgip=request.getParameter("rgip");
+    	   String submit=request.getParameter("submit");
+    	   System.out.println(rgip);
+    	   register rg=new register();
+    	   rg.setUsername(username);
+    	   if(rg.checkName()){
+    		   request.getRequestDispatcher("/userExist.jsp").forward(request,response);
+    	   }else{
+    		   rg.setPasswords(passwords);
+    		   rg.setEmail(email);
+    		   rg.setRgip(rgip);
+    		   boolean exist=rg.checkrgip(rgip);
+    		   System.out.println(exist);
+    		   String incode=request.getParameter("code");
+    		   String rightcode=(String)request.getSession().getAttribute("rCode");
+    		   System.out.println("后台接收到的正确验证码："+rightcode);
+    		   System.out.println("注册表单submit："+submit);
+    		   if(incode!=null&& rightcode!=null){
+    			   if(incode.equals(rightcode)){
+    				   if(submit!=null&&!submit.equals("")){
+    	    			   if(exist==true)
+    	        			   request.getRequestDispatcher("/regIperror.jsp").forward(request,response);
+    	        		   else{
+    	        			   int result=rg.registerUser();
+    	        			   if(result==1)
+    	            			   request.getRequestDispatcher("/regSuccess.jsp").forward(request,response);
+    	            		   else
+    	            			   request.getRequestDispatcher("/regFailure.jsp").forward(request,response);
+    	        	   }
+    			   }else{
+    				   request.setAttribute("getdata","数据为空。<<注册失败");
+    				   request.getRequestDispatcher("/regEmpty.jsp").forward(request,response); 
+    			   }
+    		   }else{
+    			   request.setAttribute("getdata","验证码不正确，请重新输入。<<注册失败");
+				   request.getRequestDispatcher("/regEmpty.jsp").forward(request,response);
+    		   }
+    		   }
+
+       }
+       }
+       else if(actionUrl.equals("/checkName.action")){
+    	   String username=request.getParameter("username");
+    	   register rg=new register();
+    	   rg.setUsername(username);
+    	   boolean exist=rg.checkName();
+    	   if(exist){
+    		   request.getRequestDispatcher("/userExist.jsp").forward(request,response);
+    	   }else{
+    		   request.getRequestDispatcher("/userNoExist.jsp").forward(request,response);
+    	   }
+    	   
+       }
+       else if(actionUrl.equals("/login.action")){
+    	   String loginusername=request.getParameter("loginusername");
+    	   String loginpasswords=request.getParameter("loginpasswords");
+    	   register rg=new register();
+    	   rg.setUsername(loginusername);
+    	   rg.setPasswords(loginpasswords);
+    	   System.out.println("用户名:"+loginusername);
+    	   System.out.println("密码:"+loginpasswords);
+    	   ip ip1=new ip();
+    	   String userip=ip1.getIpAddr(request);//request.getRemoteAddr();只能简单的获取用户ip
+    	   System.out.println("登录的ip:"+userip);
+    	   String submit=request.getParameter("submit");
+    	   System.out.println("表单的submit:"+submit);
+    	   String incode=request.getParameter("code");
+		   String rightcode=(String)request.getSession().getAttribute("rCode");
+		   System.out.println("后台接收到的正确验证码："+rightcode);
+		   boolean exist=rg.checklogin();
+		   if(incode!=null&&rightcode!=null){
+			   if(incode.equals(rightcode)){
+				   System.out.println("进行了第一步");
+				   if(submit!=null&&!submit.equals("")){
+					   System.out.println("进行了第2步");
+					   if(exist==true&&(!loginusername.equals("admin")&&!loginusername.equals("admin"))){
+			    		   request.getSession().setAttribute("login","true");
+			    		   request.getSession().setAttribute("loginusername",loginusername);
+			    		   request.getSession().setAttribute("userip",userip);
+			    		   request.getRequestDispatcher("/lgSuccess.jsp").forward(request,response);
+			    	   }
+			    	   else if(exist==false){
+			    		   request.getSession().setAttribute("login","false");
+			    		   request.getSession().setAttribute("getdata1","登录失败！原因：用户名或密码错误");
+			    		   request.getRequestDispatcher("/lgFailure.jsp").forward(request,response);
+			    	   }
+			    	   else if(loginusername.equals("admin")&&loginpasswords.equals("admin")){
+			    		   System.out.println("进入了管理界面");
+			        		   request.getSession().setAttribute("login","true");
+			        		   request.getRequestDispatcher("/lgadminSuccess.jsp").forward(request,response);
+			    	   }   
+				   } 
+			   }else{
+				   request.getSession().setAttribute("getdata1","登录失败！原因：验证码不错误,请重新输入");
+	    		   request.getRequestDispatcher("/lgFailure.jsp").forward(request,response);
+			   }
+		   }
+       }
+		else if(actionUrl.equals("/edit.action")){
+			String id=request.getParameter("id");
+			register xmm1=register.getById(id);
+			request.setAttribute("xmm1", xmm1);
+			request.getRequestDispatcher("/Redit.jsp").forward(request,response);
+		}
+		else if(actionUrl.equals("/update.action")){
+			String username=request.getParameter("username");
+			String passwords=request.getParameter("passwords");
+			String email=request.getParameter("email");
+			String id=request.getParameter("id");
+			String rgtime=request.getParameter("rgtime");
+			String rgip=request.getParameter("rgip");
+			int r=register.update(id,username,passwords,email,rgtime,rgip);
+			if(r==1){
+				request.getRequestDispatcher("/Rsuccess.jsp").forward(request,response);
+			}
+			else{
+				request.getRequestDispatcher("/Rfailure.jsp").forward(request,response);
+			}
+		}
+		else if(actionUrl.equals("/del.action")){
+			String id=request.getParameter("id");
+			int r=register.delete(id);
+			if(r==1){
+				request.getRequestDispatcher("/Rsuccess.jsp").forward(request,response);
+			}
+			else{
+				request.getRequestDispatcher("/Rfailure.jsp").forward(request,response);
+			}
+		}
+	}
+}

@@ -1,0 +1,17 @@
+
+public class MyRunnable implements Runnable {
+	public void run() {
+		System.out.println("id=" + Thread.currentThread().getId() + ", name=" + Thread.currentThread().getName());
+	}
+
+	public static void main(String[] args) {
+		MyRunnable t1 = new MyRunnable();
+		MyRunnable t2 = new MyRunnable();
+		Thread thread1 = new Thread(t1, "Thread 1");
+		Thread thread2 = new Thread(t2);
+		thread2.setName("Thread 2");
+		thread1.start();
+		thread2.start();
+	}
+
+}

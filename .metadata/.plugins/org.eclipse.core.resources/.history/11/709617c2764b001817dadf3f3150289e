@@ -1,0 +1,63 @@
+package cn.photoflash.reply.bean;
+
+import java.util.Date;
+
+
+
+public class Reply {
+	private int rid;
+	private int uid;
+	private Date replytime;
+	private String content;
+	private int pid;
+	private String username;
+
+	public String getUsername() {
+		return username;
+	}
+
+	public void setUsername(String username) {
+		this.username = username;
+	}
+
+	public int getRid() {
+		return rid;
+	}
+
+	public void setRid(int rid) {
+		this.rid = rid;
+	}
+
+	public int getUid() {
+		return uid;
+	}
+
+	public void setUid(int uid) {
+		this.uid = uid;
+	}
+
+	public Date getReplytime() {
+		return replytime;
+	}
+
+	public void setReplytime(Date replytime) {
+		this.replytime = replytime;
+	}
+
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	public int getPid() {
+		return pid;
+	}
+
+	public void setPid(int pid) {
+		this.pid = pid;
+	}
+
+}

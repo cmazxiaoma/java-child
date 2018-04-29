@@ -1,0 +1,13 @@
+package ip;
+import java.io.IOException;
+import javax.servlet.*;
+import javax.servlet.http.*;
+public class ip{
+	public String getRemortIP(HttpServletRequest request) {
+   if(request.getHeader("x-forwarded-for") == null) {
+	return request.getRemoteAddr();
+	}
+	return request.getHeader("x-forwarded-for");
+	}
+	
+}

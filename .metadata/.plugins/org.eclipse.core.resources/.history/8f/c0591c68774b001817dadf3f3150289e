@@ -1,0 +1,53 @@
+package service;
+import util.*;
+
+import java.io.*;
+import java.util.*;
+public class AdminService{
+	private DBUtil db=new DBUtil();
+	//更新上传文件信息
+	@SuppressWarnings("rawtypes")
+	public int updateFile(String realPath,Map file,Map parameters){
+		int result=0;
+		File f=new File(realPath);
+		f.delete();
+		String sql="update files set size=?,hits=?,filePath=?,fileName=? where id=?";
+		result=db.update(sql,new Object[]{file.get("size"),"0",file.get("filePath"),file.get("fileName"),parameters.get("id")});
+		return result;
+	}
+	@SuppressWarnings("rawtypes")
+	public int updateInfo(Map parameters){
+		Object id=parameters.get("id");
+		Object name=parameters.get("name");
+		Object type=parameters.get("type");
+		Object description=parameters.get("description");
+		Object username=parameters.get("username");
+		String sql="update files set name=?,lastModified=now(),type=?,description=? where id=?";
+		System.out.println("更新的sql:"+sql);
+		return db.update(sql, new Object[]{name,type,description,id});
+	}
+	//删除上传文件信息
+	public int delFile(String realPath,Map file){
+		int result=0;
+		File f=new File(realPath);
+		System.out.println("删除文件的路径:"+f);
+		f.delete();
+		System.out.println("进行了删除上传文件信息步骤");
+		String sql="delete from files where size=? and filePath=? and fileName=?";
+		System.out.println("file.getsize:"+file.get("size"));
+		System.out.println("删除的语句："+sql);
+		result=db.update(sql,new Object[]{file.get("size"),file.get("filePath"),file.get("fileName")});
+		return result;
+	}
+	//获得所有信息的PageBean对象
+		public PageBean adminlist(int curPage){
+			String sql="select * from files order by lastModified desc";
+			return db.getPageBean(sql,new Object[]{},curPage);
+		}
+		//通过id获得单条数据信息
+		@SuppressWarnings("rawtypes")
+		public Map getById(String id){
+			String sql="select * from files where id=?";
+			return db.getMap(sql, new Object[]{id});
+		}
+}

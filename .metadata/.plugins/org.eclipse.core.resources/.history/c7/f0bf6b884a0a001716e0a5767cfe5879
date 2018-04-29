@@ -1,0 +1,41 @@
+public class QuickSort {
+	public static void sort(int[] number){
+		quickSort(number,0,number.length-1);
+	}
+
+	private static void quickSort(int[] number, int left, int right) {
+		// TODO Auto-generated method stub
+		int i=left,j=right;
+		int x=number[left];
+		while(i<j){
+			
+			//死循环， 只为从右到左 找到比x小的元素
+			while(i<j&&number[j]>=x){
+				j--;
+				}
+			if(i<j){
+				number[i++]=number[j];
+			}
+			
+			//只为从左到右找到比x大的元素，找到了就跳出循环
+			while(i<j&&number[i]<=x){
+				i++;
+			}
+			if(i<j){
+				number[j--]=number[i];
+			}
+			}
+		number[i]=x;
+		
+		}
+		
+		
+	
+	public static void main(String[]args){
+		int[] num={34,1,23,345,12,546,131,54,78,6543,321,85,1234,7,76,234};
+		sort(num);
+		for(int i=0;i<num.length;i++){
+			System.out.println(num[i]);
+		}
+	}
+}

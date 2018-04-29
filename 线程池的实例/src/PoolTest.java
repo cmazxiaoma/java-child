@@ -1,0 +1,34 @@
+import java.util.concurrent.ArrayBlockingQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
+
+public class PoolTest {
+
+	private static final int TASK_SLEEP_TIME = 2;
+	private static final int TASK_MAX_NUMBER = 10;
+
+	public static void main(String[] args) {
+		// 构造一个线程池
+		ThreadPoolExecutor threadPool = new ThreadPoolExecutor(2, 4, 2, TimeUnit.SECONDS,
+				new ArrayBlockingQueue<Runnable>(3), new ThreadPoolExecutor.CallerRunsPolicy());
+		for (int i = 1; i <= TASK_MAX_NUMBER; i++) {
+			try {
+				// 产生一个任务，并将其加入到线程池
+				String task = "任务#" + i;
+				System.out.println("往线程池放入任务:" + task);
+				threadPool.execute(new Thread(new ThreadPoolTask(task)));
+				Thread.sleep(TASK_SLEEP_TIME);
+				System.out.println("线程池中的线程数:" + threadPool.getActiveCount());
+
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+
+		}
+
+		// 关闭线程池
+		threadPool.shutdown();
+
+	}
+
+}

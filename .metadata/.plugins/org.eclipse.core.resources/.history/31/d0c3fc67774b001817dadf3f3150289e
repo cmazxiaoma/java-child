@@ -1,0 +1,106 @@
+package servlets;
+import util.*;
+import java.util.*;
+import java.io.*;
+import javax.servlet.*;
+import javax.servlet.http.*;
+import service.AdminService;
+@SuppressWarnings("serial")
+public class AdminServlet extends HttpServlet{
+	public void doGet(HttpServletRequest request,HttpServletResponse response)
+		throws ServletException,IOException{
+		doPost(request,response);
+	}
+	@SuppressWarnings("rawtypes")
+	public void doPost(HttpServletRequest request,HttpServletResponse response)
+			throws ServletException,IOException{
+			request.setCharacterEncoding("UTF-8");
+			//分析文件路径，根据路径进行不同的处理
+			String requestPath=request.getRequestURI();
+			int i=requestPath.lastIndexOf('/');
+			String path=requestPath.substring(i);
+			RequestDispatcher rd=null;
+			//创建模型层对象
+			AdminService as=new AdminService();
+			if(path.equals("/update")){
+				//更新文件时，显示待更新的文件信息
+				String id=request.getParameter("id");
+				Map file=as.getById(id);
+				request.setAttribute("file",file);
+				rd=request.getRequestDispatcher("/Rupdate.jsp");
+				rd.forward(request,response);
+			}else if(path.equals("/dealUpdate")){
+				//处理更新操作，更新分两个部分：更新上传文件和更新文件信息
+				int result=0;
+				String uploadPath="/software";
+				FileUtil fu=new FileUtil();
+				int r=fu.upload(this.getServletContext(),request,response,uploadPath);
+				if(r==1){
+					Map file=(Map)fu.getFile();
+					Map parameters=(Map)fu.getParameters();
+					if(!file.isEmpty()){
+						//更新上传文件
+						//取得原有上传文件的绝对路径
+						String realPath=this.getServletContext().getRealPath((String)parameters.get("filePath"));
+						//删除原有文件，并更新数据库中的文件路径和文件名
+						result=as.updateFile(realPath,file,parameters);
+					}
+					//更新文件信息
+					result=as.updateInfo(parameters);
+				}
+				//操作成功或失败后返回结果页面result.jsp
+				if(result==1){
+					request.setAttribute("uploaduser","admin");
+					request.setAttribute("result","更新成功！");
+					request.setAttribute("list", "/AdminServlet/adminlist");
+				}else{
+					request.setAttribute("result","更新失败！");
+					request.setAttribute("list", "/AdminServlet/adminlist");
+				}
+				rd=request.getRequestDispatcher("/result.jsp");
+				rd.forward(request,response);
+			}
+			
+			else if(path.equals("/del")){//等下再写	
+				int result=0;
+				String id=request.getParameter("id");
+				Map file=as.getById(id);
+				System.out.println("file:"+file);
+				System.out.println("进行了需要被删除文件的信息传输");
+				String realPath=this.getServletContext().getRealPath((String)file.get("filePath"));
+				//删除原有文件，并删除数据库中的文件路径和文件名这一行数据
+				result=as.delFile(realPath,file);
+		//删除成功或失败后返回结果页面result.jsp
+		if(result==1){
+			request.setAttribute("uploaduser",file.get("username"));
+			request.setAttribute("result","删除成功！");
+			request.setAttribute("list", "/AdminServlet/adminlist");
+		}else{
+			request.setAttribute("result","删除失败！");
+			request.setAttribute("list", "/AdminServlet/adminlist");
+		}
+		rd=request.getRequestDispatcher("/result.jsp");
+		rd.forward(request,response);
+			}
+			else if(path.equals("/adminlist")){
+				//文件显示功能，带分页处理页面
+				//获得要显示的页数
+				String page=request.getParameter("page");
+				//当前的页数
+				int curPage=0;
+				//没有获得page值得处理
+				if(page==null||page.length()<1){
+					curPage=1;
+				}else{
+					curPage=Integer.parseInt(page);
+				}
+				PageBean pageBean=as.adminlist(curPage);
+				request.setAttribute("pageBean",pageBean);
+				rd=request.getRequestDispatcher("/adminlist.jsp");
+				rd.forward(request, response);
+			}
+			else if(path.equals("/adminemail")){
+				 request.getRequestDispatcher("/adminemail.jsp").forward(request,response);
+			}
+	}
+}
